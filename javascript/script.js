@@ -17,6 +17,14 @@ if (width < 1024) {
       document.querySelector('.nav').classList.toggle('show');
     });
   });
+} else if (width === undefined) {
+  const navToggle = document.querySelectorAll('#nav-toggle');
+
+  navToggle.forEach(e => {
+    e.addEventListener('click', () => {
+      document.querySelector('.nav').classList.toggle('show');
+    });
+  }); 
 }
 
 //Cart Modal Interaction
