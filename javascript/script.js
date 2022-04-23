@@ -35,14 +35,6 @@ cartToggle.addEventListener('click', () => {
   document.querySelector('.nav').style.display = 'block';
 });
 
-//User Modal Interaction
-
-const userToggle = document.querySelector('.nav-button-user');
-
-userToggle.addEventListener('click', () => {
-  document.querySelector('.nav').style.display = 'block';
-});
-
 //Item amount
 const itemAmount = document.querySelector('.item-button-amount-value');
 const decrementAmount = document.querySelector('.item-button-amount-decrease');
@@ -64,6 +56,7 @@ decrementAmount.addEventListener('click', () => {
 
 //Carouselle Interaction
 const mainIllustration = document.querySelector(".item-illustration-main");
+var illustrationNumber = 1;
 
 if (width < 1024) {
   var position = 1;
@@ -96,9 +89,77 @@ if (width < 1024) {
 
   carouselItems.forEach(e => {
     e.addEventListener('click', (e) => {
-      console.log(e.srcElement.attributes)
       const url = `url(../images/image-product-${e.srcElement.attributes[2].value}.jpg)`;
       mainIllustration.style.backgroundImage = url;
+      illustrationNumber = e.srcElement.attributes[2].value;
     });
   })
 }
+
+var lightBoxPreviousToggle;
+var lightBoxPosition;
+function toggleBottomFocus (current) {
+  //Toggle the focused state on the sub item
+  if (lightBoxPreviousToggle !== undefined) {
+    lightBoxPreviousToggle.classList.toggle('show');
+  }
+  document.querySelector(`.lightbox-illustration-sub-0${current}`).classList.toggle('show');
+  //Set the previous focus to the current one
+  lightBoxPreviousToggle = document.querySelector(`.lightbox-illustration-sub-0${current}`);
+  lightBoxPosition = current;
+}
+
+//LightBox Toggle
+const lightBoxToggler = document.querySelectorAll('#lightbox-toggle');
+const lightBoxIllustration = document.querySelector(".lightbox-illustration-main");
+
+lightBoxToggler.forEach(e => {
+  e.addEventListener('click', () => {
+    //Toggle the lightbox
+    document.querySelector('.lightbox').classList.toggle('display');
+    const url = `url(../images/image-product-${illustrationNumber}.jpg)`;
+    lightBoxIllustration.style.backgroundImage = url;
+    toggleBottomFocus(illustrationNumber);
+  });
+});
+
+//Lightbox Interaction
+const prev = document.querySelector('#lightbox-container-slider-prev');
+const next = document.querySelector('#lightbox-container-slider-next');
+
+next.addEventListener('click', e => {
+  if (lightBoxPosition < 4) {
+    lightBoxPosition++;
+    const url = `url(../images/image-product-${lightBoxPosition}.jpg)`;
+    lightBoxIllustration.style.backgroundImage = url;
+    toggleBottomFocus(lightBoxPosition);
+  } else {
+    lightBoxPosition = 1;
+    const url = `url(../images/image-product-${lightBoxPosition}.jpg)`;
+    lightBoxIllustration.style.backgroundImage = url;
+    toggleBottomFocus(lightBoxPosition);
+  }
+});
+prev.addEventListener('click', e => {
+  if (lightBoxPosition > 1) {
+    lightBoxPosition--;
+    const url = `url(../images/image-product-${lightBoxPosition}.jpg)`;
+    lightBoxIllustration.style.backgroundImage = url;
+    toggleBottomFocus(lightBoxPosition);
+  } else {
+    lightBoxPosition = 4;
+    const url = `url(../images/image-product-${lightBoxPosition}.jpg)`;
+    lightBoxIllustration.style.backgroundImage = url;
+    toggleBottomFocus(lightBoxPosition);
+  }
+});
+
+//BottomBar Interaction
+const lightBoxCarouselItems = document.querySelectorAll("#lightbox-illustration-sub-i");
+
+lightBoxCarouselItems.forEach(element => {
+  element.addEventListener('click', (e) => {
+    const url = `url(../images/image-product-${e.srcElement.attributes[2].value}.jpg)`;
+    lightBoxIllustration.style.backgroundImage = url;
+  });
+})
