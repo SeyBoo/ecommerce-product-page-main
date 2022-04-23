@@ -161,5 +161,6 @@ lightBoxCarouselItems.forEach(element => {
   element.addEventListener('click', (e) => {
     const url = `url(../images/image-product-${e.srcElement.attributes[2].value}.jpg)`;
     lightBoxIllustration.style.backgroundImage = url;
+    toggleBottomFocus(e.srcElement.attributes[2].value);
   });
 })
